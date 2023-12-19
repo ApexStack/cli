@@ -1,6 +1,6 @@
 {
   "name": "@aljithkj/rf",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A starter kit for MERN stack development.",
   "main": "index.js",
   "type": "module",
