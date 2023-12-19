@@ -2,32 +2,22 @@ import { exec } from 'child_process';
 import fs from 'fs'
 import path from 'path';
 import chalk from "chalk";
-import { githubRepos, technologies } from "./constant.js";
+import { GITHUB_REPOS } from "./constant.js";
 import { createSpinner } from 'nanospinner';
 import { promisify } from 'util';
 import { isParcelInstalled } from './utils.js';
 
 const execPromise = promisify(exec);
 
-export async function cloneRepository(tech, setup, folderPath) {
-    let repoUrl;
-    switch (tech) {
-        case technologies.REACT:
-            repoUrl = githubRepos[technologies.REACT];
-            break;
-        case technologies.EXPRESS:
-            repoUrl = githubRepos[technologies.EXPRESS];
-            break;
-        case technologies.REACT_EXPRESS:
-            repoUrl = githubRepos[technologies.REACT_EXPRESS];
-            break;
-        case technologies.REACT_EXPRESS_MONGO_DB:
-            repoUrl = githubRepos[technologies.REACT_EXPRESS_MONGO_DB];
-            break;
-        default:
-            break;
+export async function cloneRepository(tech, setup, folderPath, tailwind) {
+    let repoName;
+
+    if(tech.toLowerCase().includes('react')) {
+        repoName = tailwind ? `${tech}-${setup}-tailwind` : `${tech}-${setup}`;
     }
 
+    let repoUrl = GITHUB_REPOS[repoName];
+    
     if(!repoUrl) {    
         console.log(chalk.redBright(`Something went wrong!!`)); 
         process.exit(1);
