@@ -5,7 +5,6 @@ import inquirer from 'inquirer';
 import gradient from 'gradient-string';
 import chalkAnimation from 'chalk-animation';
 import figlet from 'figlet';
-import { createSpinner } from 'nanospinner';
 import { TECHS } from './constant.js';
 import { cloneRepository } from './repo.js';
 
@@ -13,6 +12,7 @@ let folderPath;
 let tech;
 let setup;
 let tailwind;
+let isFunction;
 
 const sleep = (ms = 200) => new Promise((r) => setTimeout(r, ms));
 
@@ -79,6 +79,25 @@ async function style() {
   tailwind = answers.style === 'Yes' ? true : false;
 }
 
+async function functionOrClass() {
+  const choices = [
+    { name: chalk.magenta('Function'), value: 'FUNCTION' },
+    { name: chalk.cyanBright('Class'), value: 'CLASS' },
+  ];
+
+  const answers = await inquirer.prompt({
+    name: 'function',
+    type: 'list',
+    message: 'Function or Class based:',
+    choices: [
+      choices[0].name,
+      choices[1].name,
+    ],
+  });
+
+  isFunction = choices.find(choice => answers.function.includes(choice.name))?.value || '';
+}
+
 async function folderName() {
   const answers = await inquirer.prompt({
     name: 'path',
@@ -98,7 +117,7 @@ async function packageInstaller() {
         process.exit(1);
     }
 
-    await cloneRepository(tech, setup, folderPath, tailwind);
+    await cloneRepository(tech, setup, folderPath, tailwind, isFunction);
 
     figlet(`Reactive Forge`, (err, data) => {
       console.log(gradient.morning(data) + '\n');
@@ -120,6 +139,9 @@ await chooseTechnology();
 await typeScript();
 if(tech.toLowerCase().includes('react')) {
   await style();
+}
+if(tech.toLowerCase().includes('express')) {
+  await functionOrClass()
 }
 await folderName();
 await packageInstaller();

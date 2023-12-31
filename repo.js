@@ -9,11 +9,17 @@ import { isParcelInstalled } from './utils.js';
 
 const execPromise = promisify(exec);
 
-export async function cloneRepository(tech, setup, folderPath, tailwind) {
+export async function cloneRepository(tech, setup, folderPath, tailwind, isFunction) {
     let repoName;
 
-    if(tech.toLowerCase().includes('react')) {
+    const lowerTech = tech.toLowerCase();
+
+    if(lowerTech.includes('react') && lowerTech.includes('express')) {
+        // 
+    } else if (lowerTech.includes('react')) {
         repoName = tailwind ? `${tech}-${setup}-tailwind` : `${tech}-${setup}`;
+    } else if(lowerTech.includes('express')) {
+        repoName = `${tech}-${setup}-${isFunction}`;
     }
 
     let repoUrl = GITHUB_REPOS[repoName];
