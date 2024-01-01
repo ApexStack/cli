@@ -11,3 +11,15 @@ export const isParcelInstalled = async () => {
         });
     });
 }
+
+export const removeGitRemote = async (path) => {
+    return new Promise((resolve, reject) => {
+        exec(`cd ${path} && git remote remove origin && rm -rf .git`, (error, stdout, stderr) => {
+            if (error) {
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        })
+    })
+}

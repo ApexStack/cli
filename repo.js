@@ -5,7 +5,7 @@ import chalk from "chalk";
 import { GITHUB_REPOS } from "./constant.js";
 import { createSpinner } from 'nanospinner';
 import { promisify } from 'util';
-import { isParcelInstalled } from './utils.js';
+import { isParcelInstalled, removeGitRemote } from './utils.js';
 
 const execPromise = promisify(exec);
 
@@ -47,6 +47,7 @@ export async function cloneRepository(tech, setup, folderPath, tailwind, isFunct
         if(!isParcelExist){
             await execPromise('npm i -g parcel');
         }
+        await removeGitRemote(targetPath);
         spinner.success({ text: 'Successfully installed!' });
     } catch (err) {
         const messages = err.message.split(': ');
