@@ -15,8 +15,10 @@ export const TECHNOLOGIES = {
     EXPRESS_JS_CLASS: 'Express-JS-CLASS',
     EXPRESS_TS_FUNCTION: 'Express-TS-FUNCTION',
     EXPRESS_TS_CLASS: 'Express-TS-CLASS',
-    REACT_EXPRESS: 'React + Express',
-    REACT_EXPRESS_MONGO_DB: 'React + Express + MongoDB'
+    REACT_EXPRESS_JS_FUNCTION: 'React-Express-JS-FUNCTION',
+    REACT_EXPRESS_JS_CLASS: 'React-Express-JS-CLASS',
+    REACT_EXPRESS_TS_FUNCTION: 'React-Express-TS-FUNCTION',
+    REACT_EXPRESS_TS_CLASS: 'React-Express-TS-CLASS',
 }
 
 export const GITHUB_REPOS = {
@@ -29,6 +31,21 @@ export const GITHUB_REPOS = {
     [TECHNOLOGIES.EXPRESS_TS_FUNCTION] : 'https://github.com/ReactiveForge/express-ts-function.git',
     [TECHNOLOGIES.EXPRESS_TS_CLASS] : 'https://github.com/ReactiveForge/express-ts-class.git',
     [TECHNOLOGIES.REACT_EXPRESS] : '',
-    [TECHNOLOGIES.REACT_EXPRESS_MONGO_DB] : '',
 };
   
+export const MAKEFILE_CONTENT = 
+`install: setup-client setup-server
+
+setup-client:
+  cd client && npm install &
+
+setup-server:
+  cd server && npm install
+
+run: run-client run-server
+
+run-client:
+  cd client && npm run dev &
+
+run-server:
+  cd server && npm run start`;
