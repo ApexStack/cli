@@ -34,7 +34,6 @@ async function chooseTechnology() {
       TECHS.REACT,
       TECHS.EXPRESS,
       TECHS.REACT_EXPRESS,
-      TECHS.REACT_EXPRESS_MONGO_DB,
     ],
   });
 
