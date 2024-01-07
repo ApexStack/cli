@@ -1,13 +1,14 @@
 import { exec } from 'child_process';
-import fs from 'fs'
+import fs, { writeFile } from 'fs'
 import path from 'path';
 import chalk from "chalk";
-import { GITHUB_REPOS, MAKEFILE_CONTENT } from "./constant.js";
+import { GITHUB_REPOS, PACKAGE_JSON } from "./constant.js";
 import { createSpinner } from 'nanospinner';
 import { promisify } from 'util';
 import { isParcelInstalled, removeGitRemote } from './utils.js';
 
 const execPromise = promisify(exec);
+const writeFilePromise = promisify(writeFile);
 
 export async function cloneRepository(tech, setup, folderPath, tailwind, isFunction) {
     let repoName;
@@ -15,7 +16,7 @@ export async function cloneRepository(tech, setup, folderPath, tailwind, isFunct
     const lowerTech = tech.toLowerCase();
 
     if(lowerTech.includes('react') && lowerTech.includes('express')) {
-        const repoName1 = tailwind ? `React-${setup}-tailwind` : `React-${setup}`;
+        const repoName1 = tailwind ? `React-${setup}-tailwind-s` : `React-${setup}-s`;
         const repoName2 = `Express-${setup}-${isFunction}`;
 
         const reactUrl = GITHUB_REPOS[repoName1];
@@ -93,7 +94,9 @@ async function installMultipleRepo({ reactUrl, expressUrl, folderPath }) {
         await execPromise(`cd ${targetPath}/client && git clone ${reactUrl} ./`);
         await execPromise(`cd ${targetPath}/server && git clone ${expressUrl} ./`);
 
-        await execPromise(`echo "${MAKEFILE_CONTENT}" > ${targetPath}/Makefile`);
+        const filePath = path.join(targetPath, 'package.json');
+        await writeFilePromise(filePath, PACKAGE_JSON);
+        await execPromise(`cd ${targetPath} && npm i -D concurrently`)
 
         await removeGitRemote(`${targetPath}/client`);
         await removeGitRemote(`${targetPath}/server`);
